@@ -1,6 +1,7 @@
 package com.example.mindArch.Controller;
 
 import com.example.mindArch.Dto.AuthResponse;
+import com.example.mindArch.Dto.SignUpResponse;
 import com.example.mindArch.Dto.SigninRequest;
 import com.example.mindArch.Dto.SignupRequest;
 import com.example.mindArch.Service.AuthService;
@@ -16,7 +17,7 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/signup")
-    public String signup(@RequestBody SignupRequest request) {
+    public ResponseEntity<SignUpResponse<Void>> signup(@RequestBody SignupRequest request) {
         return authService.signUp(request);
     }
 

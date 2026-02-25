@@ -1,11 +1,14 @@
 package com.example.mindArch.Service;
 
 import com.example.mindArch.Dto.AuthResponse;
+import com.example.mindArch.Dto.SignUpResponse;
 import com.example.mindArch.Dto.SigninRequest;
 import com.example.mindArch.Dto.SignupRequest;
 import com.example.mindArch.Entity.User;
 import com.example.mindArch.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +21,12 @@ public class AuthService {
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
 
-    public String signUp(SignupRequest request) {
+    public ResponseEntity<SignUpResponse<Void>> signUp(SignupRequest request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("User already exists");
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .body(new SignUpResponse<>("User already exists", null));
         }
 
         User user = new User();
@@ -30,8 +35,9 @@ public class AuthService {
         user.setName(request.getName());
 
         userRepository.save(user);
-
-        return "User registered successfully";
+        return ResponseEntity.ok(
+                new SignUpResponse<>("User registered successfully", null)
+        );
     }
 
     public AuthResponse signIn(SigninRequest request) {
