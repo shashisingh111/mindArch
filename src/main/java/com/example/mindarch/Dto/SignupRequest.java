@@ -1,4 +1,4 @@
-package com.example.mindArch.Dto;
+package com.example.mindarch.Dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

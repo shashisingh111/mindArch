@@ -1,6 +1,6 @@
-package com.example.mindArch.Repository;
+package com.example.mindarch.Repository;
 
-import com.example.mindArch.Entity.User;
+import com.example.mindarch.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 

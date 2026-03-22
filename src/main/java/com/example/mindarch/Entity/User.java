@@ -1,4 +1,4 @@
-package com.example.mindArch.Entity;
+package com.example.mindarch.Entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,12 +1,11 @@
-package com.example.mindArch.Service;
+package com.example.mindarch.Service;
 
-import com.example.mindArch.Dto.AuthResponse;
-import com.example.mindArch.Dto.SignUpResponse;
-import com.example.mindArch.Dto.SigninRequest;
-import com.example.mindArch.Dto.SignupRequest;
-import com.example.mindArch.Entity.User;
-import com.example.mindArch.Repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.mindarch.Dto.AuthResponse;
+import com.example.mindarch.Dto.SignUpResponse;
+import com.example.mindarch.Dto.SigninRequest;
+import com.example.mindarch.Dto.SignupRequest;
+import com.example.mindarch.Entity.User;
+import com.example.mindarch.Repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,10 +14,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-    @Autowired
-    private UserRepository userRepository;
-
+    private final UserRepository userRepository;
+    private final JwtService jwtService;
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+    public AuthService(UserRepository userRepository, JwtService jwtService) {
+        this.userRepository = userRepository;
+        this.jwtService = jwtService;
+    }
 
 
     public ResponseEntity<SignUpResponse<Void>> signUp(SignupRequest request) {
@@ -49,7 +52,8 @@ public class AuthService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        return new AuthResponse("Login successful", user.getEmail());
+        String token = jwtService.generateToken(user.getEmail());
+        return new AuthResponse("Login successful", user.getEmail(), token);
     }
 }
 
